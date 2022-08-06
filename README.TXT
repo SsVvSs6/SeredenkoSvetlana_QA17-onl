@@ -11,7 +11,7 @@ HW Plan:
     8.1. Fix comments from comments
     8.2. Commit and push
     8.3. Resolve comments in old PR
-    8.4. Create new PR and send it to Nikita
+    8.4. Send PR URL to Nikita
 9. Check that PR is merged
 
 Note: never make commit to master!
