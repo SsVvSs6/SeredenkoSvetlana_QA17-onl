@@ -38,11 +38,49 @@ public class Task1 {
         if (lineNumber > 1 & columnNumber > 1) {
             int difference = secondLineSumm(matrix) - diagonalSumm(matrix, lineNumber, columnNumber);
             System.out.println("Разность сумм: " + difference);
+            if (columnNumber == lineNumber) {
+                writeSquareCenter(matrix, lineNumber);
+            }
+            else {
+                writeNonsquareCenter(matrix, lineNumber, columnNumber);
+            }
         }
         else {
-            System.out.println("Ваша матрица содержит один столбец или одну строку");
+            System.out.println("Ваша матрица содержит недостаточно строк или столбцов");
         }
 
+    }
+
+    private static void writeNonsquareCenter(int[][] matrix, int lineNumber, int columnNumber) {
+
+        int minLength = Math.min(lineNumber, columnNumber);
+        writeSquareCenter(matrix, minLength);
+    }
+
+    private static void writeSquareCenter(int[][] matrix, int length) {
+
+        int center = 0;
+        int value;
+        if (length % 2 != 0) {
+            center = length / 2;
+            value = matrix[length / 2][length / 2];
+        }
+        else {
+            int[][] newMatrix = new int[length-1][length-1];
+            for (int i = 0; i < newMatrix.length; i++) {
+                System.arraycopy(matrix[i], 0, newMatrix[i], 0, newMatrix.length);
+            }
+            System.arraycopy(matrix[length - 1], 0, newMatrix[newMatrix.length - 1], 0, newMatrix.length);
+            if (newMatrix.length == 1) {
+                value = newMatrix[0][0];
+            }
+            else {
+                center = newMatrix.length / 2;
+                value = newMatrix[newMatrix.length / 2][newMatrix.length / 2];
+            }
+        }
+
+        System.out.println("Центр - [" + center + ", " + center + "], значение - " + value);
     }
 
     private static int diagonalSumm(int[][] matrix, int lineNumber, int columnNumber) {
@@ -70,7 +108,7 @@ public class Task1 {
     private static int secondLineSumm(int[][] matrix) {
 
         int secondLineSumm = 0;
-        for (int i = 0; i < matrix.length; i++) {
+        for (int i = 0; i < 2; i++) {
             secondLineSumm += matrix[1][i];
         }
         System.out.println("Сумма второй строки равна: " + secondLineSumm);
