@@ -57,17 +57,10 @@ public class Main {
         String cpuValue = getTextValue(newComputer.getCPU());
         String ramValue = getTextValue(newComputer.getRam());
         String hddValue = getTextValue(newComputer.getHdd());
-        String cycleDeclination;
-        if (newComputer.getWorkCycle() == 1) {
-            cycleDeclination = "цикл";
-        } else if (newComputer.getWorkCycle() > 1 & newComputer.getWorkCycle() < 5) {
-            cycleDeclination = "цикла";
-        } else {
-            cycleDeclination = "циклов";
-        }
+        String cycleDeclination = getWordEnding(newComputer.getWorkCycle());
 
         System.out.println("[\"" + cpuValue + "\", \"" + ramValue + "\", \"" + hddValue + "\", "
-                + newComputer.getWorkCycle() + " " + cycleDeclination + "]");
+                + newComputer.getWorkCycle() + " цикл" + cycleDeclination + "]");
 
         if (getWorkStatus(newComputer)) {
             while (newComputer.getWorkCycle() > 0) {
