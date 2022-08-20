@@ -30,15 +30,8 @@ public class Main {
     public static void main(String[] args) {
 
         int boughtComputers = random.nextInt(10);
-        String computerDeclination;
-        if (boughtComputers == 1) {
-            computerDeclination = "компьютер";
-        } else if (boughtComputers > 1 & boughtComputers < 5) {
-            computerDeclination = "компьютера";
-        } else {
-            computerDeclination = "компьютеров";
-        }
-        System.out.println("Ваша компания закупила " + boughtComputers + " " + computerDeclination);
+        String computerDeclination = getWordEnding(boughtComputers);
+        System.out.println("Ваша компания закупила " + boughtComputers + " компьютер" + computerDeclination);
         System.out.println();
         for (int i = 0; i < boughtComputers; i++) {
             System.out.println("Компьютер №" + (i + 1));
@@ -47,28 +40,24 @@ public class Main {
         }
     }
 
+    private static String getWordEnding(int count) {
+
+        if (count == 1) {
+            return "";
+        } else if (count > 1 & count < 5) {
+            return "а";
+        } else {
+            return "ов";
+        }
+    }
+
     private static void getDescriptionComputer() {
 
-        String cpuValue;
-        String ramValue;
-        String hddValue;
-        String cycleDeclination;
         Computer newComputer = new Computer();
-        if (newComputer.getCPU()) {
-            cpuValue = "есть";
-        } else {
-            cpuValue = "нет";
-        }
-        if (newComputer.getRam()) {
-            ramValue = "есть";
-        } else {
-            ramValue = "нет";
-        }
-        if (newComputer.getHdd()) {
-            hddValue = "есть";
-        } else {
-            hddValue = "нет";
-        }
+        String cpuValue = getTextValue(newComputer.getCPU());
+        String ramValue = getTextValue(newComputer.getRam());
+        String hddValue = getTextValue(newComputer.getHdd());
+        String cycleDeclination;
         if (newComputer.getWorkCycle() == 1) {
             cycleDeclination = "цикл";
         } else if (newComputer.getWorkCycle() > 1 & newComputer.getWorkCycle() < 5) {
@@ -77,7 +66,7 @@ public class Main {
             cycleDeclination = "циклов";
         }
 
-        System.out.println("[\"" + cpuValue + "\", \"" + ramValue + "\", \"" + hddValue + "\" , "
+        System.out.println("[\"" + cpuValue + "\", \"" + ramValue + "\", \"" + hddValue + "\", "
                 + newComputer.getWorkCycle() + " " + cycleDeclination + "]");
 
         if (getWorkStatus(newComputer)) {
@@ -88,6 +77,15 @@ public class Main {
                     turnOnComputer(newComputer);
                 }
             }
+        }
+    }
+
+    private static String getTextValue(boolean value) {
+
+        if (value) {
+            return "есть";
+        } else {
+            return "нет";
         }
     }
 
