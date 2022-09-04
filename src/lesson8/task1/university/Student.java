@@ -69,6 +69,6 @@ public class Student {
     @Override
     public String toString() {
         return "Name: " + name + "; id: " + studentID + ": department: " + getFaculty() + "; courses: " +
-                Arrays.toString(courseIDs);
+                Course.getCourseName(courseIDs);
     }
 }
