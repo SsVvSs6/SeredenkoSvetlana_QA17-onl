@@ -1,5 +1,8 @@
 package lesson8.task1.university;
 
+import lesson9.task1.exceptions.*;
+
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -35,6 +38,14 @@ public class University {
             System.out.println(objectStudent.getName() + " is enrolled");
             students[studentID] = objectStudent;
             objectStudent.setStudent(true);
+            try {
+                if (Objects.equals(Arrays.toString(objectStudent.getCourseIDs()), "[5]")) {
+                    throw new CourseIsOnlyMathException();
+                }
+            } catch (CourseIsOnlyMathException ciome) {
+                System.out.println("\n" + ciome.courseIsOnlyMathMessage);
+                System.out.println();
+            }
         } else {
             System.out.println(objectStudent.getName() + " didn't enroll");
         }
@@ -123,6 +134,14 @@ public class University {
         String studentFullName = studentName + " " + studentSecondName;
         System.out.print("Enter Teacher name: ");
         String teacherName = scanner.nextLine();
+        try {
+            if (!Objects.equals(teacherName, "Viktor") & !Objects.equals(teacherName, "viktor")) {
+                throw new TeacherIsNotViktorException();
+            }
+        } catch (TeacherIsNotViktorException tinve) {
+            System.out.println("\n" + tinve.teacherIsNotViktorMessage);
+            System.out.println();
+        }
 
         Student[] students = Student.getStudents();
         Teacher[] teachers = Teacher.getTeachers();
@@ -130,15 +149,24 @@ public class University {
         int studentId = getStudentEqualId(studentFullName, students);
         boolean teacherEqual = isTeacherNameEqual(teacherName, teachers);
         int teacherId = getTeacherEqualId(teacherName, teachers);
-        if (studentsEqual & teacherEqual) {
-            if (isCourseEqual(studentId, teacherId)) {
-                System.out.println(students[studentId]);
+
+        try {
+            if (studentsEqual & teacherEqual & isCourseEqual(studentId, teacherId)) {
+                if (isCourseEqual(studentId, teacherId)) {
+                    System.out.println(students[studentId]);
+                } else {
+                    System.out.println("Student is not found");
+                }
             } else {
                 System.out.println("Student is not found");
+                throw new NoDataForCourseComparisonException();
             }
-        } else {
-            System.out.println("Student is not found");
+        } catch (NoDataForCourseComparisonException ndfcce) {
+            System.out.println(ndfcce.noDataForCourseComparisonMessage);
+        } catch (NullPointerException npe) {
+            System.out.println("Courses could not be compared with null");
         }
+
     }
 
     private static int getTeacherEqualId(String teacherName, Teacher[] teachers) {
@@ -167,16 +195,21 @@ public class University {
     }
 
     private static boolean isTeacherNameEqual(String teacherName, Teacher[] teachers) {
-        for (int i = 0; i < teachers.length; i++) {
-            if (teachers[i] != null) {
-                if (teacherName.equalsIgnoreCase(teachers[i].getName())) {
-                    if (teachers[i].isActive()) {
-                        return true;
+        try {
+            for (int i = 0; i < teachers.length; i++) {
+                if (teachers[i] != null) {
+                    if (teacherName.equalsIgnoreCase(teachers[i].getName())) {
+                        if (teachers[i].isActive()) {
+                            return true;
+                        }
                     }
                 }
             }
+            throw new NoTeacherFoundException();
+        } catch (NoTeacherFoundException ntfe) {
+            System.out.println(ntfe.noTeacherFoundMessage);
+            return false;
         }
-        return false;
     }
 
     private static int getStudentEqualId(String studentFullName, Student[] students) {
@@ -193,16 +226,21 @@ public class University {
     }
 
     private static boolean isStudentNameEqual(String studentFullName, Student[] students) {
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] != null) {
-                if (students[i].isStudent()) {
-                    if (studentFullName.equalsIgnoreCase(students[i].getName())) {
-                        return true;
+        try {
+            for (int i = 0; i < students.length; i++) {
+                if (students[i] != null) {
+                    if (students[i].isStudent()) {
+                        if (studentFullName.equalsIgnoreCase(students[i].getName())) {
+                            return true;
+                        }
                     }
                 }
             }
+            throw new NoStudentFoundExceptions();
+        } catch (NoStudentFoundExceptions nsfe) {
+            System.out.println(nsfe.noStudentFoundMessage);
+            return false;
         }
-        return false;
     }
 
     public String getName() {
