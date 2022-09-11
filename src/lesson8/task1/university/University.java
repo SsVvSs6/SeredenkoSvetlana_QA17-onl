@@ -2,17 +2,14 @@ package lesson8.task1.university;
 
 import lesson9.task1.exceptions.*;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class University {
 
     private String name;
     private String address;
     private String phone;
-    private static Department[] departments = new Department[10];
+    private static ArrayList<Department> departments = new ArrayList<>();
 
     static Random random = new Random();
     static Scanner scanner = new Scanner(System.in);
@@ -25,21 +22,13 @@ public class University {
 
     public void addStudent(Student objectStudent) {
         boolean isStudent = random.nextBoolean();
-        int studentID = 0;
-        Student[] students = Student.getStudents();
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] == null) {
-                studentID = i;
-                objectStudent.setStudentID(studentID);
-                break;
-           }
-        }
+        ArrayList<Student> students = Student.getStudents();
         if (isStudent) {
             System.out.println(objectStudent.getName() + " is enrolled");
-            students[studentID] = objectStudent;
+            students.add(objectStudent);
             objectStudent.setStudent(true);
             try {
-                if (Objects.equals(Arrays.toString(objectStudent.getCourseIDs()), "[5]")) {
+                if (Objects.equals(Arrays.toString(new ArrayList[]{objectStudent.getCourseIDs()}), "[5]")) {
                     throw new CourseIsOnlyMathException();
                 }
             } catch (CourseIsOnlyMathException ciome) {
@@ -52,60 +41,53 @@ public class University {
     }
 
     public void removeStudent(int studentID) {
-        Student[] students = Student.getStudents();
-        if (students[studentID] != null) {
-            System.out.println("Student " + students[studentID].getName() + " is expelled");
-            students[studentID].setStudent(false);
+        ArrayList<Student> students = Student.getStudents();
+        if (students.get(studentID) != null) {
+            System.out.println("Student " + students.get(studentID).getName() + " is expelled");
+            students.get(studentID).setStudent(false);
         } else {
             System.out.println("No such Student exists");
         }
     }
 
     public static Student getStudent(int studentId) {
-        Student[] students = Student.getStudents();
-        if (students[studentId].isStudent()) {
-            return students[studentId];
+        ArrayList<Student> students = Student.getStudents();
+        if (students.get(studentId).isStudent()) {
+            return students.get(studentId);
         } else {
             return null;
         }
     }
 
     public void getStudents() {
-        Student[] students = Student.getStudents();
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] != null) {
-                if (students[i].isStudent()) {
-                    System.out.println(students[i].getName());
+        ArrayList<Student> students = Student.getStudents();
+        for (int i = 0; i < students.toArray().length; i++) {
+            if (students.get(i) != null) {
+                if (students.get(i).isStudent()) {
+                    System.out.println(students.get(i).getName());
                 }
             }
         }
     }
 
     public void addDepartment(Department name) {
-        int departmentID = 0;
-        for (int i = 0; i < departments.length; i++) {
-            if (departments[i] == null) {
-                departmentID = i;
-                break;
-            }
-        }
-            departments[departmentID] = name;
-            name.setActive(true);
+        departments.add(name);
+        name.setActive(true);
     }
 
     public void removeDepartment(int departmentID) {
-        if (departments[departmentID] != null) {
-            System.out.println("Department \"" + departments[departmentID].getName() + "\" is removed");
-            departments[departmentID].setActive(false);
+        if (departments.get(departmentID) != null) {
+            System.out.println("Department \"" + departments.get(departmentID).getName() + "\" is removed");
+            departments.get(departmentID).setActive(false);
         } else {
             System.out.println("No such Department exists");
         }
     }
 
     public Department getDepartment(int departmentNumber) {
-        if (departments[departmentNumber] != null) {
-            if (departments[departmentNumber].isActive()) {
-                return departments[departmentNumber];
+        if (departments.get(departmentNumber) != null) {
+            if (departments.get(departmentNumber).isActive()) {
+                return departments.get(departmentNumber);
             } else {
                 return null;
             }
@@ -115,10 +97,10 @@ public class University {
     }
 
     public void getAllDepart() {
-        for (int i = 0; i < departments.length; i++) {
-            if (departments[i] != null) {
-                if (departments[i].isActive()) {
-                    System.out.println(departments[i]);
+        for (int i = 0; i < departments.toArray().length; i++) {
+            if (departments.get(i) != null) {
+                if (departments.get(i).isActive()) {
+                    System.out.println(departments.get(i));
                 }
             } else {
                 break;
@@ -143,8 +125,8 @@ public class University {
             System.out.println();
         }
 
-        Student[] students = Student.getStudents();
-        Teacher[] teachers = Teacher.getTeachers();
+        ArrayList<Student> students = Student.getStudents();
+        ArrayList<Teacher> teachers = Teacher.getTeachers();
         boolean studentsEqual = isStudentNameEqual(studentFullName, students);
         int studentId = getStudentEqualId(studentFullName, students);
         boolean teacherEqual = isTeacherNameEqual(teacherName, teachers);
@@ -153,7 +135,7 @@ public class University {
         try {
             if (studentsEqual & teacherEqual & isCourseEqual(studentId, teacherId)) {
                 if (isCourseEqual(studentId, teacherId)) {
-                    System.out.println(students[studentId]);
+                    System.out.println(students.get(studentId));
                 } else {
                     System.out.println("Student is not found");
                 }
@@ -169,11 +151,11 @@ public class University {
 
     }
 
-    private static int getTeacherEqualId(String teacherName, Teacher[] teachers) {
-        for (int i = 0; i < teachers.length; i++) {
-            if (teachers[i] != null) {
-                if (teacherName.equalsIgnoreCase(teachers[i].getName())) {
-                    if (teachers[i].isActive()) {
+    private static int getTeacherEqualId(String teacherName, ArrayList<Teacher> teachers) {
+        for (int i = 0; i < teachers.toArray().length; i++) {
+            if (teachers.get(i) != null) {
+                if (teacherName.equalsIgnoreCase(teachers.get(i).getName())) {
+                    if (teachers.get(i).isActive()) {
                         return i;
                     }
                 }
@@ -183,10 +165,11 @@ public class University {
     }
 
     private static boolean isCourseEqual(int studentId, int teacherId) {
-        for (int i = 0; i < Objects.requireNonNull(getStudent(studentId)).getCourseIDs().length; i++) {
-            for (int j = 0; j < Objects.requireNonNull(Department.getInstructor(teacherId)).getCourseID().length; j++) {
-               if (Objects.requireNonNull(getStudent(studentId)).getCourseIDs()[i] ==
-                       Objects.requireNonNull(Department.getInstructor(teacherId)).getCourseID()[j]) {
+        for (int i = 0; i < Objects.requireNonNull(getStudent(studentId)).getCourseIDs().toArray().length; i++) {
+            for (int j = 0; j < Objects.requireNonNull(Department.getInstructor(teacherId)).
+                    getCourseID().toArray().length; j++) {
+               if (Objects.equals(Objects.requireNonNull(getStudent(studentId)).getCourseIDs().get(i),
+                       Objects.requireNonNull(Department.getInstructor(teacherId)).getCourseID().get(j))) {
                    return  true;
                }
             }
@@ -194,12 +177,12 @@ public class University {
         return false;
     }
 
-    private static boolean isTeacherNameEqual(String teacherName, Teacher[] teachers) {
+    private static boolean isTeacherNameEqual(String teacherName, ArrayList<Teacher> teachers) {
         try {
-            for (int i = 0; i < teachers.length; i++) {
-                if (teachers[i] != null) {
-                    if (teacherName.equalsIgnoreCase(teachers[i].getName())) {
-                        if (teachers[i].isActive()) {
+            for (int i = 0; i < teachers.toArray().length; i++) {
+                if (teachers.get(i) != null) {
+                    if (teacherName.equalsIgnoreCase(teachers.get(i).getName())) {
+                        if (teachers.get(i).isActive()) {
                             return true;
                         }
                     }
@@ -212,11 +195,11 @@ public class University {
         }
     }
 
-    private static int getStudentEqualId(String studentFullName, Student[] students) {
-        for (int i = 0; i < students.length; i++) {
-            if (students[i] != null) {
-                if (students[i].isStudent()) {
-                    if (studentFullName.equalsIgnoreCase(students[i].getName())) {
+    private static int getStudentEqualId(String studentFullName, ArrayList<Student> students) {
+        for (int i = 0; i < students.toArray().length; i++) {
+            if (students.get(i) != null) {
+                if (students.get(i).isStudent()) {
+                    if (studentFullName.equalsIgnoreCase(students.get(i).getName())) {
                         return i;
                     }
                 }
@@ -225,12 +208,12 @@ public class University {
         return 0;
     }
 
-    private static boolean isStudentNameEqual(String studentFullName, Student[] students) {
+    private static boolean isStudentNameEqual(String studentFullName, ArrayList<Student> students) {
         try {
-            for (int i = 0; i < students.length; i++) {
-                if (students[i] != null) {
-                    if (students[i].isStudent()) {
-                        if (studentFullName.equalsIgnoreCase(students[i].getName())) {
+            for (int i = 0; i < students.toArray().length; i++) {
+                if (students.get(i) != null) {
+                    if (students.get(i).isStudent()) {
+                        if (studentFullName.equalsIgnoreCase(students.get(i).getName())) {
                             return true;
                         }
                     }
@@ -267,7 +250,7 @@ public class University {
         this.phone = phone;
     }
 
-    public Department[] getDepartments() {
+    public ArrayList<Department> getDepartments() {
         return departments;
     }
 }

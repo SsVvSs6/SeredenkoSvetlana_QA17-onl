@@ -1,55 +1,52 @@
 package lesson8.task1.university;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Department {
 
     private String name;
     private String university;
-    private int[] courseIDs;
+    private ArrayList<Integer> courseIDs = new ArrayList<>();
     private boolean active;
 
-    public Department(String name, String university, boolean active, int ... courseIDs) {
+    public Department(String name, String university, boolean active, int ... courseID) {
         this.name = name;
         this.university = university;
         this.active = active;
-        this.courseIDs = courseIDs;
+        for (int i = 0; i < courseID.length; i++) {
+            assert false;
+            this.courseIDs.add(courseID[i]);
+        }
     }
 
     @Override
     public String toString() {
         return "Name: " + name + "; university: " + university + ", courseIDs: " +
-                Arrays.toString(courseIDs);
+                Arrays.toString(courseIDs.toArray());
     }
 
     public void addInstructor(Teacher objectTeacher) {
-        int teacherID = 0;
-        Teacher[] teachers = Teacher.getTeachers();
-        for (int i = 0; i < teachers.length; i++) {
-            if (teachers[i] == null) {
-                teacherID = i;
-                break;
-            }
-        }
-        teachers[teacherID] = objectTeacher;
+        ArrayList<Teacher> teachers = Teacher.getTeachers();
+        teachers.add(objectTeacher);
         objectTeacher.setActive(true);
     }
 
     public void removeInstructor(int teacherID) {
-        Teacher[] teachers = Teacher.getTeachers();
-        if (teachers[teacherID] != null) {
-            System.out.println("Teacher " + teachers[teacherID].getName() + " is removed");
-            teachers[teacherID].setActive(false);
+        ArrayList<Teacher> teachers = Teacher.getTeachers();
+        if (teachers.get(teacherID) != null) {
+            System.out.println("Teacher " + teachers.get(teacherID).getName() + " is removed");
+            teachers.get(teacherID).setActive(false);
         } else {
             System.out.println("No such Teacher exists");
         }
     }
 
     public static Teacher getInstructor(int teacherId) {
-        Teacher[] teachers = Teacher.getTeachers();
-        if (teachers[teacherId] != null) {
-            if (teachers[teacherId].isActive()) {
-                return teachers[teacherId];
+        ArrayList<Teacher> teachers = Teacher.getTeachers();
+        if (teachers.get(teacherId) != null) {
+            if (teachers.get(teacherId).isActive()) {
+                return teachers.get(teacherId);
             } else {
                 return null;
             }
@@ -59,11 +56,11 @@ public class Department {
     }
 
     public static void getAllInstructor() {
-        Teacher[] teachers = Teacher.getTeachers();
-        for (int i = 0; i < teachers.length; i++) {
-            if (teachers[i] != null) {
-                if (teachers[i].isActive()) {
-                    System.out.println(teachers[i]);
+        ArrayList<Teacher> teachers = Teacher.getTeachers();
+        for (int i = 0; i < teachers.toArray().length; i++) {
+            if (teachers.get(i) != null) {
+                if (teachers.get(i).isActive()) {
+                    System.out.println(teachers.get(i));
                 }
             }
         }
@@ -85,11 +82,11 @@ public class Department {
         this.university = university;
     }
 
-    public int[] getCourseIDs() {
+    public ArrayList<Integer> getCourseIDs() {
         return courseIDs;
     }
 
-    public void setCourseIDs(int[] courseIDs) {
+    public void setCourseIDs(ArrayList<Integer> courseIDs) {
         this.courseIDs = courseIDs;
     }
 

@@ -1,11 +1,13 @@
 package lesson8.task1.university;
 
+import java.util.ArrayList;
+
 public class Course {
 
     private String name;
     private String faculty;
     private int courseID;
-    private static Course[] courses = new Course[20];
+    private static ArrayList<Course> courses = new ArrayList<>();
 
     public Course (String name, String faculty, int courseID) {
         this.name = name;
@@ -14,21 +16,16 @@ public class Course {
     }
 
     public static void addCourses(Course course) {
-        for (int i = 1; i < courses.length; i++) {
-            if (courses[i] == null) {
-                courses[i] = course;
-                break;
-            }
-        }
+        courses.add(course);
     }
 
-    public static StringBuilder getCourseName(int... courseID) {
+    public static StringBuilder getCourseName(ArrayList<Integer> courseID) {
         StringBuilder courseNames = new StringBuilder();
-        for (int i = 1; i < courses.length; i++) {
-            if (courses[i] != null) {
-                for (int j = 0; j < courseID.length; j++) {
-                    if (courseID[j] == courses[i].getCourseID()) {
-                        courseNames.append(courses[i].getName()).append(" ");
+        for (int i = 1; i < courses.toArray().length; i++) {
+            if (courses.get(i) != null) {
+                for (int j = 0; j < courseID.toArray().length; j++) {
+                    if (courseID.get(j) == courses.get(i).getCourseID()) {
+                        courseNames.append(courses.get(i).getName()).append(" ");
                     }
                 }
             } else {

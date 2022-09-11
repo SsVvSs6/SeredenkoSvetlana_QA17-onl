@@ -1,21 +1,23 @@
 package lesson8.task1.university;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class Student {
 
     private String name;
     private int studentID;
     private String faculty;
-    private int[] courseIDs = new int[5];
-    private static Student[] students = new Student[20];
+    private ArrayList<Integer> courseIDs = new ArrayList<>();
+    private static ArrayList<Student> students = new ArrayList<>();
     private boolean student;
 
     public Student(String name, boolean student, String faculty, int ... courseIDs) {
         this.name = name;
         this.student = student;
         this.faculty = faculty;
-        this.courseIDs = courseIDs;
+        for (int i = 0; i < courseIDs.length; i++) {
+            this.courseIDs.add(courseIDs[i]);
+        }
     }
 
     public String getName() {
@@ -34,11 +36,11 @@ public class Student {
         this.studentID = studentID;
     }
 
-    public int[] getCourseIDs() {
+    public ArrayList<Integer> getCourseIDs() {
         return courseIDs;
     }
 
-    public void setCourseIDs(int[] courseIDs) {
+    public void setCourseIDs(ArrayList<Integer> courseIDs) {
         this.courseIDs = courseIDs;
     }
 
@@ -50,11 +52,11 @@ public class Student {
         this.faculty = faculty;
     }
 
-    public static Student[] getStudents() {
+    public static ArrayList<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(Student[] students) {
+    public void setStudents(ArrayList<Student> students) {
         Student.students = students;
     }
 
