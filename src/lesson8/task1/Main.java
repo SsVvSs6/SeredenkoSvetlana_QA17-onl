@@ -95,5 +95,7 @@ public class Main {
         System.out.println();
 
         University.findStudent();
+        System.out.println();
+        University.getDepartmentByStudentAndTeacherName();
     }
 }

@@ -1,5 +1,9 @@
 package lesson8.task1.university;
 
+/**
+ * Добавить метод для поиска департамента по имени студента и имени препода и обработать ошибки
+ */
+
 import lesson9.task1.exceptions.*;
 
 import java.util.*;
@@ -42,12 +46,20 @@ public class University {
 
     public void removeStudent(int studentID) {
         ArrayList<Student> students = Student.getStudents();
-        if (students.get(studentID) != null) {
-            System.out.println("Student " + students.get(studentID).getName() + " is expelled");
-            students.get(studentID).setStudent(false);
-        } else {
-            System.out.println("No such Student exists");
+        try {
+            if (students == null) {
+                throw new NoStudentFoundExceptions();
+            }
+            if (students.get(studentID) != null) {
+                System.out.println("Student " + students.get(studentID).getName() + " is expelled");
+                students.get(studentID).setStudent(false);
+            } else {
+                System.out.println("No such Student exists");
+            }
+        } catch (NoStudentFoundExceptions nsfe) {
+            System.out.println(nsfe.noStudentFoundMessage);
         }
+
     }
 
     public static Student getStudent(int studentId) {
@@ -109,26 +121,13 @@ public class University {
     }
 
     public static void findStudent() {
-        System.out.print("Enter Student name: ");
-        String studentName = scanner.nextLine();
-        System.out.print("Enter Student second name: ");
-        String studentSecondName = scanner.nextLine();
-        String studentFullName = studentName + " " + studentSecondName;
-        System.out.print("Enter Teacher name: ");
-        String teacherName = scanner.nextLine();
-        try {
-            if (!Objects.equals(teacherName, "Viktor") & !Objects.equals(teacherName, "viktor")) {
-                throw new TeacherIsNotViktorException();
-            }
-        } catch (TeacherIsNotViktorException tinve) {
-            System.out.println("\n" + tinve.teacherIsNotViktorMessage);
-            System.out.println();
-        }
 
         ArrayList<Student> students = Student.getStudents();
         ArrayList<Teacher> teachers = Teacher.getTeachers();
-        boolean studentsEqual = isStudentNameEqual(studentFullName, students);
-        int studentId = getStudentEqualId(studentFullName, students);
+        String studentName = getStudentName();
+        String teacherName = getTeacherName();
+        boolean studentsEqual = isStudentNameEqual(studentName, students);
+        int studentId = getStudentEqualId(studentName, students);
         boolean teacherEqual = isTeacherNameEqual(teacherName, teachers);
         int teacherId = getTeacherEqualId(teacherName, teachers);
 
@@ -149,6 +148,57 @@ public class University {
             System.out.println("Courses could not be compared with null");
         }
 
+    }
+
+    public static void getDepartmentByStudentAndTeacherName() {
+
+        ArrayList<Student> students = Student.getStudents();
+        ArrayList<Teacher> teachers = Teacher.getTeachers();
+        String studentName = getStudentName();
+        String teacherName = getTeacherName();
+        boolean studentsEqual = isStudentNameEqual(studentName, students);
+        int studentId = getStudentEqualId(studentName, students);
+        boolean teacherEqual = isTeacherNameEqual(teacherName, teachers);
+        int teacherId = getTeacherEqualId(teacherName, teachers);
+        try {
+            if (studentsEqual & teacherEqual & isCourseEqual(studentId, teacherId)) {
+                if (isCourseEqual(studentId, teacherId)) {
+                    System.out.println(students.get(studentId).getName() + "'s department is " +
+                            students.get(studentId).getFaculty());
+                } else {
+                    System.out.println("Student is not found");
+                }
+            } else {
+                System.out.println("Student is not found");
+                throw new NoDataForCourseComparisonException();
+            }
+        } catch (NoDataForCourseComparisonException ndfcce) {
+            System.out.println(ndfcce.noDataForCourseComparisonMessage);
+        } catch (NullPointerException npe) {
+            System.out.println("Courses could not be compared with null");
+        }
+    }
+
+    private static String getStudentName() {
+        System.out.print("Enter Student name: ");
+        String studentName = scanner.nextLine();
+        System.out.print("Enter Student second name: ");
+        String studentSecondName = scanner.nextLine();
+        return studentName + " " + studentSecondName;
+    }
+
+    private static String getTeacherName() {
+        System.out.print("Enter Teacher name: ");
+        String teacherName = scanner.nextLine();
+        try {
+            if (!Objects.equals(teacherName, "Viktor") & !Objects.equals(teacherName, "viktor")) {
+                throw new TeacherIsNotViktorException();
+            }
+        } catch (TeacherIsNotViktorException tinve) {
+            System.out.println("\n" + tinve.teacherIsNotViktorMessage);
+            System.out.println();
+        }
+        return teacherName;
     }
 
     private static int getTeacherEqualId(String teacherName, ArrayList<Teacher> teachers) {
