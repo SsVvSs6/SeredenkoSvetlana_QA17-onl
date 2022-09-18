@@ -1,5 +1,9 @@
 package lesson8.task1.university;
 
+/**
+ * Вывести используя карту список всех студентов и их преподов (ни одного студента не потерять)
+ */
+
 import lesson9.task1.exceptions.*;
 
 import java.util.*;
@@ -52,11 +56,20 @@ public class University {
 
     public static Student getStudent(int studentId) {
         ArrayList<Student> students = Student.getStudents();
-        if (students.get(studentId).isStudent()) {
-            return students.get(studentId);
-        } else {
-            return null;
+        try {
+            if (students != null) {
+                if (students.get(studentId).isStudent()) {
+                    return students.get(studentId);
+                } else {
+                    return null;
+                }
+            } else {
+                throw new NoStudentFoundExceptions();
+            }
+        } catch (NoStudentFoundExceptions nsfe) {
+            System.out.println(nsfe.noStudentFoundMessage);
         }
+        return null;
     }
 
     public void getStudents() {
@@ -148,6 +161,35 @@ public class University {
         } catch (NullPointerException npe) {
             System.out.println("Courses could not be compared with null");
         }
+
+    }
+
+    public static void getAllStudentsAndTheirTeachersNames() {
+        ArrayList<Student> students = Student.getStudents();
+
+        for (int i = 0; i < students.toArray().length; i++) {
+            ArrayList<Teacher> teachersList = new ArrayList<>();
+            for (int j = 0; j < students.get(i).getCourseIDs().toArray().length; j++) {
+                teachersList.add(Teacher.getTeacherByCourseID(students.get(i).getCourseIDs().get(j),
+                        students.get(i).getFaculty()));
+            }
+            students.get(i).setStudentTeachers(teachersList);
+        }
+
+        HashMap<Student, ArrayList<Teacher>> studentAndTheirTeachersMap = new HashMap<>();
+        ArrayList<Student> activeStudents = new ArrayList<>();
+        for (int i = 0; i < students.toArray().length; i++) {
+            if (students.get(i).isStudent()) {
+                studentAndTheirTeachersMap.put(students.get(i), students.get(i).getStudentTeachers());
+                activeStudents.add(students.get(i));
+            }
+        }
+
+        for (int i = 0; i < studentAndTheirTeachersMap.size(); i++) {
+            System.out.println(activeStudents.get(i).getName() + " - " +
+                    activeStudents.get(i).getStudentTeachersList());
+        }
+
 
     }
 
