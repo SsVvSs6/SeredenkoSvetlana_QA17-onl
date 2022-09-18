@@ -53,12 +53,15 @@ public class Main {
                 courseChemistry.getCourseID());
         Teacher sixthTeacher = new Teacher("Delete", false, chemistry.getName(),
                 courseChemistry.getCourseID());
+        Teacher seventhTeacher = new Teacher("Tanja", false, mechMath.getName(),
+                coursePhilosophy.getCourseID());
         mechMath.addInstructor(firstTeacher);
         chemistry.addInstructor(secondTeacher);
         chemistry.addInstructor(fifthTeacher);
         philosophy.addInstructor(thirdTeacher);
         philosophy.addInstructor(fourthTeacher);
         chemistry.addInstructor(sixthTeacher);
+        mechMath.addInstructor(seventhTeacher);
         System.out.println("Instructors: ");
         Department.getAllInstructor();
         System.out.println();
@@ -78,7 +81,7 @@ public class Main {
                 courseRights.getCourseID());
         Student fifthStudent = new Student("Dima K", false, mechMath.getName(),
                 coursePhilosophy.getCourseID(),
-                courseRights.getCourseID());
+                courseMathTwo.getCourseID());
         System.out.println("Admission results:");
         bsu.addStudent(firstStudent);
         bsu.addStudent(secondStudent);
@@ -95,5 +98,8 @@ public class Main {
         System.out.println();
 
         University.findStudent();
+        System.out.println();
+        System.out.println();
+        University.getAllStudentsAndTheirTeachersNames();
     }
 }

@@ -1,6 +1,7 @@
 package lesson8.task1.university;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Teacher {
 
@@ -22,6 +23,19 @@ public class Teacher {
     @Override
     public String toString() {
         return "Name: " + name + "; department: " + faculty + "; courses: " + Course.getCourseName(courseID);
+    }
+
+    public static Teacher getTeacherByCourseID(int courseID, String faculty) {
+        for (int i = 0; i < teachers.toArray().length; i++) {
+            if (Objects.equals(faculty, teachers.get(i).getFaculty())) {
+                for (int j = 0; j < teachers.get(i).getCourseID().toArray().length; j++) {
+                    if (courseID == teachers.get(i).getCourseID().get(j)) {
+                        return teachers.get(i);
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public String getName() {

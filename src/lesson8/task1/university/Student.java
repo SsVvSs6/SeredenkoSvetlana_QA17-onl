@@ -9,6 +9,7 @@ public class Student {
     private String faculty;
     private ArrayList<Integer> courseIDs = new ArrayList<>();
     private static ArrayList<Student> students = new ArrayList<>();
+    private ArrayList<Teacher> studentTeachers = new ArrayList<>();
     private boolean student;
 
     public Student(String name, boolean student, String faculty, int ... courseIDs) {
@@ -18,6 +19,34 @@ public class Student {
         for (int i = 0; i < courseIDs.length; i++) {
             this.courseIDs.add(courseIDs[i]);
         }
+
+        new Student(this.name, this.student, this.faculty, this.courseIDs, null);
+    }
+
+    public Student(String name, boolean student, String faculty, ArrayList<Integer> courseIDs,
+                   ArrayList<Teacher> studentTeachers) {
+        this.name = name;
+        this.faculty = faculty;
+        this.courseIDs = courseIDs;
+        this.student = student;
+        this.studentTeachers = studentTeachers;
+    }
+
+    public ArrayList<Teacher> getStudentTeachers() {
+        return studentTeachers;
+    }
+
+    public StringBuilder getStudentTeachersList() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < studentTeachers.toArray().length - 1; i++) {
+            sb.append(" ").append(studentTeachers.get(i).getName()).append(",");
+        }
+        sb.append(" ").append(studentTeachers.get(studentTeachers.toArray().length - 1).getName()).append(".");
+        return sb;
+    }
+
+    public void setStudentTeachers(ArrayList<Teacher> studentTeachers) {
+        this.studentTeachers = studentTeachers;
     }
 
     public String getName() {
